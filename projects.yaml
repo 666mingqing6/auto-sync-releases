@@ -1,0 +1,36 @@
+projects:
+  - name: ZygiskNext
+    repo: Dr-TSNG/ZygiskNext
+    # 可指定下载特定文件，支持通配符
+    asset_patterns:
+      - "*.zip"
+    # 保存到本地的目录
+    target_dir: downloads/ZygiskNext
+    # 是否包含预发布版本
+    include_prerelease: false
+    # 下载最新几个版本（默认1）
+    keep_versions: 1
+
+  - name: TrickyStore
+    repo: 5ec1cff/TrickyStore
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/TrickyStore
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: yurikey
+    repo: Yurii0307/yurikey
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/yurikey
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: PlayIntegrityFork
+    repo: osm0sis/PlayIntegrityFork
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/PlayIntegrityFork
+    include_prerelease: false
+    keep_versions: 1
