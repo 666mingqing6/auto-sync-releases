@@ -34,3 +34,21 @@ projects:
     target_dir: downloads/PlayIntegrityFork
     include_prerelease: false
     keep_versions: 1
+
+  # 新增项目开始
+  - name: HMA-OSS
+    repo: frknkrc44/HMA-OSS
+    # 这个项目发布的是APK文件
+    asset_patterns:
+      - "*.apk"
+    target_dir: downloads/HMA-OSS
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: fuckluna
+    repo: 666mingqing6/fuckluna
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/fuckluna
+    include_prerelease: false
+    keep_versions: 1
