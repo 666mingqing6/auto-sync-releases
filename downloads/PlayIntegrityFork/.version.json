@@ -1,0 +1,12 @@
+{
+  "tag_name": "v16",
+  "published_at": "2025-12-28T17:29:37Z",
+  "sync_time": "2025-12-29T12:24:29.245922",
+  "assets": [
+    {
+      "name": "PlayIntegrityFork-v16.zip",
+      "size": 283080,
+      "download_url": "https://github.com/osm0sis/PlayIntegrityFork/releases/download/v16/PlayIntegrityFork-v16.zip"
+    }
+  ]
+}
