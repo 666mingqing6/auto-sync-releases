@@ -1,0 +1,75 @@
+name: Sync GitHub Releases
+
+on:
+  # 每天UTC时间0点运行（北京时间早上8点）
+  schedule:
+    - cron: '0 0 * * *'
+  
+  # 手动触发
+  workflow_dispatch:
+  
+  # 当配置文件更新时也触发
+  push:
+    paths:
+      - 'projects.yaml'
+      - 'sync.py'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        # 设置权限允许推送
+        persist-credentials: true
+        fetch-depth: 0
+    
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: 安装依赖
+      run: |
+        pip install -r requirements.txt
+    
+    - name: 执行同步脚本
+      id: sync
+      run: |
+        # 设置重试机制
+        MAX_RETRY=3
+        for i in $(seq 1 $MAX_RETRY); do
+          echo "尝试第 $i 次同步..."
+          python sync.py && break
+          if [ $i -eq $MAX_RETRY ]; then
+            echo "同步失败，已达到最大重试次数"
+            exit 1
+          fi
+          sleep 10
+        done
+        
+        # 检查是否有更新
+        if git status --porcelain | grep -q "downloads/"; then
+          echo "has_updates=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_updates=false" >> $GITHUB_OUTPUT
+        fi
+      env:
+        # 设置较长的超时时间
+        GITHUB_API_URL: https://api.github.com
+    
+    - name: 配置Git
+      if: steps.sync.outputs.has_updates == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    
+    - name: 提交更改
+      if: steps.sync.outputs.has_updates == 'true'
+      run: |
+        git add downloads/
+        git add projects.yaml
+        git commit -m "Auto-sync: Update releases [$(date +'%Y-%m-%d %H:%M:%S')]"
+        git push
