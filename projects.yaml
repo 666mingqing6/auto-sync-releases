@@ -65,6 +65,6 @@ projects:
     type: action  # 重要：指定为action类型
     workflow_file: core.yml  # workflow文件名（可选）
     asset_patterns:
-      - "*.zip"
+      - "*"
     target_dir: downloads/LSPosed-JingMatrix
     keep_versions: 1
