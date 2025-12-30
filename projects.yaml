@@ -68,3 +68,19 @@ projects:
     target_dir: downloads/WebUI-X
     include_prerelease: false
     keep_versions: 1
+
+  - name: Magisk_AsoulOpt
+    repo: nakixii/Magisk_AsoulOp
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/AsoulOpt
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: Uperf-Game-Turbo
+    repo: yinwanxi/Uperf-Game-Turbo
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/Uperf-Game-Turbo
+    include_prerelease: false
+    keep_versions: 1
