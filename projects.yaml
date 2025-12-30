@@ -52,3 +52,19 @@ projects:
     target_dir: downloads/fuckluna
     include_prerelease: false
     keep_versions: 1
+
+  - name: ZN-AuditPatch
+    repo: aviraxp/ZN-AuditPatch
+    asset_patterns:
+      - "*.zip"
+    target_dir: downloads/ZN-AuditPatch
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: WebUI-X
+    repo: MMRLApp/WebUI-X-Portable
+    asset_patterns:
+      - "*.apk"
+    target_dir: downloads/WebUI-X
+    include_prerelease: false
+    keep_versions: 1
