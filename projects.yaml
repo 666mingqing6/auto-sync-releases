@@ -5,7 +5,7 @@ projects:
     asset_patterns:
       - "*.zip"
     # 保存到本地的目录
-    target_dir: downloads/ZygiskNext
+    target_dir: downloads/Zygisk-Next
     # 是否包含预发布版本
     include_prerelease: false
     # 下载最新几个版本（默认1）
@@ -15,7 +15,7 @@ projects:
     repo: 5ec1cff/TrickyStore
     asset_patterns:
       - "*.zip"
-    target_dir: downloads/TrickyStore
+    target_dir: downloads/Tricky-Store
     include_prerelease: false
     keep_versions: 1
 
@@ -23,7 +23,7 @@ projects:
     repo: Yurii0307/yurikey
     asset_patterns:
       - "*.zip"
-    target_dir: downloads/yurikey
+    target_dir: downloads/yuri-key
     include_prerelease: false
     keep_versions: 1
 
@@ -49,7 +49,7 @@ projects:
     repo: 666mingqing6/fuckluna
     asset_patterns:
       - "*.zip"
-    target_dir: downloads/fuckluna
+    target_dir: downloads/fuck-luna
     include_prerelease: false
     keep_versions: 1
 
@@ -81,6 +81,6 @@ projects:
     repo: yinwanxi/Uperf-Game-Turbo
     asset_patterns:
       - "*.zip"
-    target_dir: downloads/uperf-game-turbo
+    target_dir: downloads/Uperf-Game-Turbo
     include_prerelease: false
     keep_versions: 1
