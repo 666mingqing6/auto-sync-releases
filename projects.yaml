@@ -1,7 +1,6 @@
 projects:
   - name: ZygiskNext
     repo: Dr-TSNG/ZygiskNext
-    type: release  # 添加type字段，明确类型
     # 可指定下载特定文件，支持通配符
     asset_patterns:
       - "*.zip"
@@ -14,7 +13,6 @@ projects:
 
   - name: TrickyStore
     repo: 5ec1cff/TrickyStore
-    type: release
     asset_patterns:
       - "*.zip"
     target_dir: downloads/TrickyStore
@@ -23,7 +21,6 @@ projects:
 
   - name: yurikey
     repo: Yurii0307/yurikey
-    type: release
     asset_patterns:
       - "*.zip"
     target_dir: downloads/yurikey
@@ -32,7 +29,6 @@ projects:
 
   - name: PlayIntegrityFork
     repo: osm0sis/PlayIntegrityFork
-    type: release
     asset_patterns:
       - "*.zip"
     target_dir: downloads/PlayIntegrityFork
@@ -42,7 +38,6 @@ projects:
   # 新增项目开始
   - name: HMA-OSS
     repo: frknkrc44/HMA-OSS
-    type: release
     # 这个项目发布的是APK文件
     asset_patterns:
       - "*.apk"
@@ -52,19 +47,8 @@ projects:
 
   - name: fuckluna
     repo: 666mingqing6/fuckluna
-    type: release
     asset_patterns:
       - "*.zip"
     target_dir: downloads/fuckluna
     include_prerelease: false
-    keep_versions: 1
-
-  # 新增Action类型的项目：LSPosed-core
-  - name: LSPosed-core
-    repo: JingMatrix/LSPosed
-    type: action  # 重要：指定为action类型
-    workflow_file: core.yml  # workflow文件名（可选）
-    asset_patterns:
-      - "*"
-    target_dir: downloads/LSPosed-JingMatrix
     keep_versions: 1
