@@ -41,6 +41,8 @@ jobs:
       # ✅ 缩进正确
       - name: 执行同步脚本
         id: sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}   # 新增此行，将PAT_TOKEN传递给脚本
         run: |
           # 设置重试机制
           MAX_RETRY=3
@@ -60,9 +62,6 @@ jobs:
           else
             echo "has_updates=false" >> $GITHUB_OUTPUT
           fi
-        env:
-          # 设置较长的超时时间
-          GITHUB_API_URL: https://api.github.com
       
       # ✅ 缩进正确
       - name: 配置Git
