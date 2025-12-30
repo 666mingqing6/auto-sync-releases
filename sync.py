@@ -275,34 +275,34 @@ def sync_action_project(project_config):
         elif item not in version_files and os.path.isdir(item_path):
             shutil.rmtree(item_path)
     
-   # 下载文件
-   downloaded_count = 0
-   for artifact in action_info.get('artifacts', []):
-       artifact_name = artifact['name']
-       
-       if should_download_asset(artifact_name, asset_patterns):
-           print(f"  正在下载: {artifact_name}")
-           
-           # *** 核心修改：构建最终保存的文件名 ***
-           # 如果原始名称没有.zip后缀，则添加；如果已有，则保留。
-           if not artifact_name.lower().endswith('.zip'):
-               final_filename = f"{artifact_name}.zip"
-           else:
-               final_filename = artifact_name
-           
-           save_path = os.path.join(target_dir, final_filename)
-           
-           # GitHub Artifact 下载URL
-           download_url = artifact['archive_download_url']
-           
-           if download_file(download_url, save_path):
-               downloaded_count += 1
-               # 注意：这里显示的size是原始JSON里的size，可能与实际文件大小略有差异
-               print(f"    下载完成 ({artifact['size_in_bytes'] / 1024 / 1024:.2f} MB)")
-               # 成功下载后，打印文件保存的确切路径，便于你查找
-               print(f"    文件已保存为: {final_filename}")
-           else:
-               print(f"    下载失败")
+    # 下载文件
+    downloaded_count = 0
+    for artifact in action_info.get('artifacts', []):
+        artifact_name = artifact['name']
+        
+        if should_download_asset(artifact_name, asset_patterns):
+            print(f"  正在下载: {artifact_name}")
+            
+            # *** 核心修改：构建最终保存的文件名 ***
+            # 如果原始名称没有.zip后缀，则添加；如果已有，则保留。
+            if not artifact_name.lower().endswith('.zip'):
+                final_filename = f"{artifact_name}.zip"
+            else:
+                final_filename = artifact_name
+            
+            save_path = os.path.join(target_dir, final_filename)
+            
+            # GitHub Artifact 下载URL
+            download_url = artifact['archive_download_url']
+            
+            if download_file(download_url, save_path):
+                downloaded_count += 1
+                # 注意：这里显示的size是原始JSON里的size，可能与实际文件大小略有差异
+                print(f"    下载完成 ({artifact['size_in_bytes'] / 1024 / 1024:.2f} MB)")
+                # 成功下载后，打印文件保存的确切路径，便于你查找
+                print(f"    文件已保存为: {final_filename}")
+            else:
+                print(f"    下载失败")
     
     # 保存版本信息
     save_version_info(target_dir, action_info, 'action')
