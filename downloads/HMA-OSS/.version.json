@@ -1,7 +1,8 @@
 {
+  "type": "release",
   "tag_name": "oss-135",
   "published_at": "2025-12-20T17:31:59Z",
-  "sync_time": "2025-12-29T12:48:19.705218",
+  "sync_time": "2025-12-30T14:03:48.121916",
   "assets": [
     {
       "name": "HMA-OSS-oss-135-debug.apk",

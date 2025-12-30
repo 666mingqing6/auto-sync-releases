@@ -1,7 +1,8 @@
 {
+  "type": "release",
   "tag_name": "v1.3.2",
   "published_at": "2025-12-28T18:31:49Z",
-  "sync_time": "2025-12-29T12:24:27.185026",
+  "sync_time": "2025-12-30T14:03:42.074872",
   "assets": [
     {
       "name": "Zygisk-Next-1.3.2-688-2c60cdd-release.zip",

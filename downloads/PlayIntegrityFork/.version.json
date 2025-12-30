@@ -1,7 +1,8 @@
 {
+  "type": "release",
   "tag_name": "v16",
   "published_at": "2025-12-29T16:45:12Z",
-  "sync_time": "2025-12-30T01:50:00.238414",
+  "sync_time": "2025-12-30T14:03:46.266284",
   "assets": [
     {
       "name": "PlayIntegrityFork-v16.zip",
