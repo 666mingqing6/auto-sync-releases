@@ -1,0 +1,17 @@
+{
+  "tag_name": "oss-135",
+  "published_at": "2025-12-20T17:31:59Z",
+  "sync_time": "2025-12-30T15:06:38.907343",
+  "assets": [
+    {
+      "name": "HMA-OSS-oss-135-debug.apk",
+      "size": 8624591,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-135/HMA-OSS-oss-135-debug.apk"
+    },
+    {
+      "name": "HMA-OSS-oss-135-release.apk",
+      "size": 2968475,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-135/HMA-OSS-oss-135-release.apk"
+    }
+  ]
+}

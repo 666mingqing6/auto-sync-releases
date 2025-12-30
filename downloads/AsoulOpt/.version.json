@@ -1,0 +1,17 @@
+{
+  "tag_name": "Plana",
+  "published_at": "2025-11-26T09:10:50Z",
+  "sync_time": "2025-12-30T15:06:43.257718",
+  "assets": [
+    {
+      "name": "Magisk_AsoulOpt_Plana.zip",
+      "size": 17775,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Plana/Magisk_AsoulOpt_Plana.zip"
+    },
+    {
+      "name": "Magisk_AsoulOpt_Plus_Plana.zip",
+      "size": 20225,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Plana/Magisk_AsoulOpt_Plus_Plana.zip"
+    }
+  ]
+}
