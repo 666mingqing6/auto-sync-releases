@@ -70,7 +70,7 @@ projects:
     keep_versions: 1
 
   - name: Magisk_AsoulOpt
-    repo: nakixii/Magisk_AsoulOp
+    repo: nakixii/Magisk_AsoulOpt
     asset_patterns:
       - "*.zip"
     target_dir: downloads/AsoulOpt
@@ -81,6 +81,6 @@ projects:
     repo: yinwanxi/Uperf-Game-Turbo
     asset_patterns:
       - "*.zip"
-    target_dir: downloads/Uperf-Game-Turbo
+    target_dir: downloads/uperf-game-turbo
     include_prerelease: false
     keep_versions: 1
