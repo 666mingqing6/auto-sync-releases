@@ -33,5 +33,7 @@
 - ZN-AuditPatch
 - Magisk_AsoulOpt
 - Uperf-Game-Turbo
+- NewHookVip
+- ReVancedXposed
 
 欢迎 Star 或 Fork 本仓库，如果有问题，随时反馈！
