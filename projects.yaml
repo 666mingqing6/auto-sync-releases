@@ -84,3 +84,19 @@ projects:
     target_dir: downloads/Uperf-Game-Turbo
     include_prerelease: false
     keep_versions: 1
+
+  - name: NewHookVip
+    repo: Xposed-Modules-Repo/top.hookvip.pro
+    asset_patterns:
+      - "*.apk"
+    target_dir: downloads/NewHookVip
+    include_prerelease: false
+    keep_versions: 1
+
+  - name: ReVancedXposed
+    repo: chsbuffer/ReVancedXposed
+    asset_patterns:
+      - "*.apk"
+    target_dir: downloads/ReVancedXposed
+    include_prerelease: false
+    keep_versions: 1
