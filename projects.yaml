@@ -89,6 +89,7 @@ projects:
     repo: Xposed-Modules-Repo/top.hookvip.pro
     asset_patterns:
       - "*.apk"
+      - "*.Apk"
     target_dir: downloads/NewHookVip
     include_prerelease: false
     keep_versions: 1
