@@ -1,12 +1,12 @@
 {
-  "tag_name": "v2.40",
-  "published_at": "2025-12-31T02:06:19Z",
-  "sync_time": "2025-12-31T09:38:05.253343",
+  "tag_name": "v2.41",
+  "published_at": "2026-01-05T01:40:04Z",
+  "sync_time": "2026-01-05T02:01:13.086013",
   "assets": [
     {
-      "name": "Yurikey_v2.40.zip",
-      "size": 406973,
-      "download_url": "https://github.com/Yurii0307/yurikey/releases/download/v2.40/Yurikey_v2.40.zip"
+      "name": "Yurikey_v2.41.signed.zip",
+      "size": 406409,
+      "download_url": "https://github.com/Yurii0307/yurikey/releases/download/v2.41/Yurikey_v2.41.signed.zip"
     }
   ]
 }
