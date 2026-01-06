@@ -1,12 +1,12 @@
 {
-  "tag_name": "module",
-  "published_at": "2025-12-29T12:44:01Z",
-  "sync_time": "2025-12-30T15:06:40.121607",
+  "tag_name": "v2",
+  "published_at": "2026-01-06T05:13:26Z",
+  "sync_time": "2026-01-06T05:17:15.875131",
   "assets": [
     {
-      "name": "luna.zip",
-      "size": 13579,
-      "download_url": "https://github.com/666mingqing6/fuckluna/releases/download/module/luna.zip"
+      "name": "luna_v2.zip",
+      "size": 14324,
+      "download_url": "https://github.com/666mingqing6/fuckluna/releases/download/v2/luna_v2.zip"
     }
   ]
 }
