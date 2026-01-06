@@ -1,17 +1,17 @@
 {
-  "tag_name": "oss-137",
-  "published_at": "2025-12-31T08:43:03Z",
-  "sync_time": "2025-12-31T09:38:05.825250",
+  "tag_name": "oss-139",
+  "published_at": "2026-01-05T21:12:36Z",
+  "sync_time": "2026-01-06T01:52:00.490408",
   "assets": [
     {
-      "name": "HMA-OSS-oss-137-debug.apk",
-      "size": 8703241,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-137/HMA-OSS-oss-137-debug.apk"
+      "name": "HMA-OSS-oss-139-debug.apk",
+      "size": 8705529,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-139/HMA-OSS-oss-139-debug.apk"
     },
     {
-      "name": "HMA-OSS-oss-137-release.apk",
-      "size": 3007352,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-137/HMA-OSS-oss-137-release.apk"
+      "name": "HMA-OSS-oss-139-release.apk",
+      "size": 3008368,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-139/HMA-OSS-oss-139-release.apk"
     }
   ]
 }
