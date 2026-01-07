@@ -1,17 +1,22 @@
 {
-  "tag_name": "oss-139",
-  "published_at": "2026-01-05T21:12:36Z",
-  "sync_time": "2026-01-06T01:52:00.490408",
+  "tag_name": "oss-141",
+  "published_at": "2026-01-06T14:37:01Z",
+  "sync_time": "2026-01-07T01:51:39.969502",
   "assets": [
     {
-      "name": "HMA-OSS-oss-139-debug.apk",
-      "size": 8705529,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-139/HMA-OSS-oss-139-debug.apk"
+      "name": "HMA-OSS-oss-141-debug.apk",
+      "size": 8704689,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-141/HMA-OSS-oss-141-debug.apk"
     },
     {
-      "name": "HMA-OSS-oss-139-release.apk",
-      "size": 3008368,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-139/HMA-OSS-oss-139-release.apk"
+      "name": "HMA-OSS-oss-141-release.apk",
+      "size": 3007996,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-141/HMA-OSS-oss-141-release.apk"
+    },
+    {
+      "name": "translators.json",
+      "size": 8689,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-141/translators.json"
     }
   ]
 }
