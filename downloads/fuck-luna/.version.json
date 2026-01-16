@@ -1,12 +1,15 @@
 {
   "tag_name": "v3",
   "published_at": "2026-01-16T12:32:02Z",
-  "sync_time": "2026-01-16T12:51:52.342522",
+  "sync_time": "2026-01-16T13:14:02.068111",
   "assets": [
     {
       "name": "luna_v3.zip",
       "size": 14340,
       "download_url": "https://github.com/666mingqing6/fuckluna/releases/download/v3/luna_v3.zip"
     }
+  ],
+  "downloaded_files": [
+    "luna_v3.zip"
   ]
 }

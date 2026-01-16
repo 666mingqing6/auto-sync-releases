@@ -1,7 +1,7 @@
 {
   "tag_name": "v363",
   "published_at": "2025-12-07T16:26:44Z",
-  "sync_time": "2025-12-30T15:06:42.298568",
+  "sync_time": "2026-01-16T13:14:03.864884",
   "assets": [
     {
       "name": "WebUI-X-v363-release-official.apk",
@@ -13,5 +13,9 @@
       "size": 25670529,
       "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v363/WebUI-X-v363-release-spoofed.apk"
     }
+  ],
+  "downloaded_files": [
+    "WebUI-X-v363-release-official.apk",
+    "WebUI-X-v363-release-spoofed.apk"
   ]
 }

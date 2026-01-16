@@ -1,12 +1,15 @@
 {
   "tag_name": "1.0.38",
   "published_at": "2026-01-11T12:06:41Z",
-  "sync_time": "2026-01-12T01:57:41.338788",
+  "sync_time": "2026-01-16T13:14:06.199948",
   "assets": [
     {
       "name": "ReVancedXposed-1.0.38.apk",
       "size": 6288953,
       "download_url": "https://github.com/chsbuffer/ReVancedXposed/releases/download/1.0.38/ReVancedXposed-1.0.38.apk"
     }
+  ],
+  "downloaded_files": [
+    "ReVancedXposed-1.0.38.apk"
   ]
 }

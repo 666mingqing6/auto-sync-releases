@@ -1,7 +1,7 @@
 {
   "tag_name": "oss-147",
   "published_at": "2026-01-13T13:51:33Z",
-  "sync_time": "2026-01-14T01:56:27.779643",
+  "sync_time": "2026-01-16T13:14:01.094179",
   "assets": [
     {
       "name": "HMA-OSS-oss-147-debug.apk",
@@ -18,5 +18,9 @@
       "size": 9210,
       "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-147/translators.json"
     }
+  ],
+  "downloaded_files": [
+    "HMA-OSS-oss-147-debug.apk",
+    "HMA-OSS-oss-147-release.apk"
   ]
 }

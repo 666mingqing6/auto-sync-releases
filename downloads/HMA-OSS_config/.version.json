@@ -1,12 +1,15 @@
 {
   "tag_name": "v1",
   "published_at": "2026-01-16T12:48:00Z",
-  "sync_time": "2026-01-16T12:51:51.685754",
+  "sync_time": "2026-01-16T13:14:01.604251",
   "assets": [
     {
       "name": "HMA-OSS_config-2026.01.16.json",
       "size": 148275,
       "download_url": "https://github.com/666mingqing6/HMA-config/releases/download/v1/HMA-OSS_config-2026.01.16.json"
     }
+  ],
+  "downloaded_files": [
+    "HMA-OSS_config-2026.01.16.json"
   ]
 }
