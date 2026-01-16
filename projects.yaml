@@ -45,6 +45,16 @@ projects:
     include_prerelease: false
     keep_versions: 1
 
+  - name: HMA-OSS_config
+    repo: 666mingqing6/HMA-config
+    # 这个项目发布的是json文件
+    asset_patterns:
+      - "*.json"
+      - "*.txt"
+    target_dir: downloads/HMA-OSS_config
+    include_prerelease: false
+    keep_versions: 1
+
   - name: fuckluna
     repo: 666mingqing6/fuckluna
     asset_patterns:
