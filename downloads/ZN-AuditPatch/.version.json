@@ -1,15 +1,15 @@
 {
-  "tag_name": "v1.1.2",
-  "published_at": "2025-11-16T04:19:38Z",
-  "sync_time": "2026-01-16T13:14:02.601796",
+  "tag_name": "v1.1.3",
+  "published_at": "2026-01-17T15:48:08Z",
+  "sync_time": "2026-01-19T01:57:59.781165",
   "assets": [
     {
-      "name": "ZN---Audit-Patch-v1.1.2-8-fa9639e-release.zip",
-      "size": 10799,
-      "download_url": "https://github.com/aviraxp/ZN-AuditPatch/releases/download/v1.1.2/ZN---Audit-Patch-v1.1.2-8-fa9639e-release.zip"
+      "name": "ZN---Audit-Patch-v1.1.3-11-a12ab38-release.zip",
+      "size": 11036,
+      "download_url": "https://github.com/aviraxp/ZN-AuditPatch/releases/download/v1.1.3/ZN---Audit-Patch-v1.1.3-11-a12ab38-release.zip"
     }
   ],
   "downloaded_files": [
-    "ZN---Audit-Patch-v1.1.2-8-fa9639e-release.zip"
+    "ZN---Audit-Patch-v1.1.3-11-a12ab38-release.zip"
   ]
 }
