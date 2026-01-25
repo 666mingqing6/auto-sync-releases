@@ -1,21 +1,21 @@
 {
-  "tag_name": "Plana",
-  "published_at": "2025-11-26T09:10:50Z",
-  "sync_time": "2026-01-16T13:14:04.570751",
+  "tag_name": "Neuro",
+  "published_at": "2026-01-24T02:13:41Z",
+  "sync_time": "2026-01-25T02:03:28.420300",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Plana.zip",
-      "size": 17775,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Plana/Magisk_AsoulOpt_Plana.zip"
+      "name": "Magisk_AsoulOpt_Neuro.zip",
+      "size": 17497,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Neuro/Magisk_AsoulOpt_Neuro.zip"
     },
     {
-      "name": "Magisk_AsoulOpt_Plus_Plana.zip",
-      "size": 20225,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Plana/Magisk_AsoulOpt_Plus_Plana.zip"
+      "name": "Magisk_AsoulOpt_Plus_Neuro.zip",
+      "size": 20116,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Neuro/Magisk_AsoulOpt_Plus_Neuro.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Plana.zip",
-    "Magisk_AsoulOpt_Plus_Plana.zip"
+    "Magisk_AsoulOpt_Neuro.zip",
+    "Magisk_AsoulOpt_Plus_Neuro.zip"
   ]
 }
