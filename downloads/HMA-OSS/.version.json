@@ -1,26 +1,26 @@
 {
-  "tag_name": "oss-154",
-  "published_at": "2026-02-05T17:09:03Z",
-  "sync_time": "2026-02-06T02:12:07.471339",
+  "tag_name": "oss-157",
+  "published_at": "2026-02-14T14:40:14Z",
+  "sync_time": "2026-02-15T02:28:23.716004",
   "assets": [
     {
-      "name": "HMA-OSS-oss-154-debug.apk",
-      "size": 8751965,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-154/HMA-OSS-oss-154-debug.apk"
+      "name": "HMA-OSS-oss-157-debug.apk",
+      "size": 8753545,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-157/HMA-OSS-oss-157-debug.apk"
     },
     {
-      "name": "HMA-OSS-oss-154-release.apk",
-      "size": 3047337,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-154/HMA-OSS-oss-154-release.apk"
+      "name": "HMA-OSS-oss-157-release.apk",
+      "size": 3048165,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-157/HMA-OSS-oss-157-release.apk"
     },
     {
       "name": "translators.json",
-      "size": 9862,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-154/translators.json"
+      "size": 9860,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-157/translators.json"
     }
   ],
   "downloaded_files": [
-    "HMA-OSS-oss-154-debug.apk",
-    "HMA-OSS-oss-154-release.apk"
+    "HMA-OSS-oss-157-debug.apk",
+    "HMA-OSS-oss-157-release.apk"
   ]
 }
