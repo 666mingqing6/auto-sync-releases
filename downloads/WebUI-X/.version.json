@@ -1,21 +1,21 @@
 {
-  "tag_name": "v363",
-  "published_at": "2025-12-07T16:26:44Z",
-  "sync_time": "2026-01-16T13:14:03.864884",
+  "tag_name": "v391",
+  "published_at": "2026-02-28T11:35:06Z",
+  "sync_time": "2026-03-01T02:31:01.142679",
   "assets": [
     {
-      "name": "WebUI-X-v363-release-official.apk",
-      "size": 25670405,
-      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v363/WebUI-X-v363-release-official.apk"
+      "name": "WebUI-X-v391-release-official.apk",
+      "size": 27161590,
+      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v391/WebUI-X-v391-release-official.apk"
     },
     {
-      "name": "WebUI-X-v363-release-spoofed.apk",
-      "size": 25670529,
-      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v363/WebUI-X-v363-release-spoofed.apk"
+      "name": "WebUI-X-v391-release-spoofed.apk",
+      "size": 27161702,
+      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v391/WebUI-X-v391-release-spoofed.apk"
     }
   ],
   "downloaded_files": [
-    "WebUI-X-v363-release-official.apk",
-    "WebUI-X-v363-release-spoofed.apk"
+    "WebUI-X-v391-release-official.apk",
+    "WebUI-X-v391-release-spoofed.apk"
   ]
 }
