@@ -1,21 +1,21 @@
 {
-  "tag_name": "v407",
-  "published_at": "2026-03-10T20:24:58Z",
-  "sync_time": "2026-03-11T02:08:09.434783",
+  "tag_name": "v423",
+  "published_at": "2026-03-14T21:55:27Z",
+  "sync_time": "2026-03-15T02:35:09.230461",
   "assets": [
     {
-      "name": "WebUI-X-v407-release-official.apk",
-      "size": 27283232,
-      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v407/WebUI-X-v407-release-official.apk"
+      "name": "WebUI-X-v423-release-official.apk",
+      "size": 25851443,
+      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v423/WebUI-X-v423-release-official.apk"
     },
     {
-      "name": "WebUI-X-v407-release-spoofed.apk",
-      "size": 27283340,
-      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v407/WebUI-X-v407-release-spoofed.apk"
+      "name": "WebUI-X-v423-release-spoofed.apk",
+      "size": 25851547,
+      "download_url": "https://github.com/MMRLApp/WebUI-X-Portable/releases/download/v423/WebUI-X-v423-release-spoofed.apk"
     }
   ],
   "downloaded_files": [
-    "WebUI-X-v407-release-official.apk",
-    "WebUI-X-v407-release-spoofed.apk"
+    "WebUI-X-v423-release-official.apk",
+    "WebUI-X-v423-release-spoofed.apk"
   ]
 }
