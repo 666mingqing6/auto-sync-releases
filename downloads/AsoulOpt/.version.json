@@ -1,21 +1,15 @@
 {
-  "tag_name": "Neuro",
-  "published_at": "2026-01-24T02:13:41Z",
-  "sync_time": "2026-01-25T02:03:28.420300",
+  "tag_name": "Evil",
+  "published_at": "2026-03-15T04:48:34Z",
+  "sync_time": "2026-03-16T02:36:04.419989",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Neuro.zip",
-      "size": 17497,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Neuro/Magisk_AsoulOpt_Neuro.zip"
-    },
-    {
-      "name": "Magisk_AsoulOpt_Plus_Neuro.zip",
-      "size": 20116,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Neuro/Magisk_AsoulOpt_Plus_Neuro.zip"
+      "name": "Magisk_AsoulOpt_Evil.zip",
+      "size": 17910,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Evil/Magisk_AsoulOpt_Evil.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Neuro.zip",
-    "Magisk_AsoulOpt_Plus_Neuro.zip"
+    "Magisk_AsoulOpt_Evil.zip"
   ]
 }
