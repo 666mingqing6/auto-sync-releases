@@ -1,15 +1,15 @@
 {
-  "tag_name": "1.0.41",
-  "published_at": "2026-02-27T01:52:22Z",
-  "sync_time": "2026-02-28T02:00:48.651114",
+  "tag_name": "2.0.100",
+  "published_at": "2026-04-18T14:32:57Z",
+  "sync_time": "2026-04-19T02:50:57.077274",
   "assets": [
     {
-      "name": "ReVancedXposed-1.0.41.apk",
-      "size": 6288539,
-      "download_url": "https://github.com/chsbuffer/ReVancedXposed/releases/download/1.0.41/ReVancedXposed-1.0.41.apk"
+      "name": "NexAlloy-2.0.100.apk",
+      "size": 8322454,
+      "download_url": "https://github.com/NexAlloy/NexAlloy/releases/download/2.0.100/NexAlloy-2.0.100.apk"
     }
   ],
   "downloaded_files": [
-    "ReVancedXposed-1.0.41.apk"
+    "NexAlloy-2.0.100.apk"
   ]
 }
