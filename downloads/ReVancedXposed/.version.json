@@ -1,15 +1,15 @@
 {
-  "tag_name": "2.0.101",
-  "published_at": "2026-04-22T10:50:19Z",
-  "sync_time": "2026-04-23T02:46:25.227949",
+  "tag_name": "2.0.102",
+  "published_at": "2026-04-24T01:59:18Z",
+  "sync_time": "2026-04-24T02:47:40.180221",
   "assets": [
     {
-      "name": "NexAlloy-2.0.101.apk",
-      "size": 8470794,
-      "download_url": "https://github.com/NexAlloy/NexAlloy/releases/download/2.0.101/NexAlloy-2.0.101.apk"
+      "name": "NexAlloy-2.0.102.apk",
+      "size": 8470806,
+      "download_url": "https://github.com/NexAlloy/NexAlloy/releases/download/2.0.102/NexAlloy-2.0.102.apk"
     }
   ],
   "downloaded_files": [
-    "NexAlloy-2.0.101.apk"
+    "NexAlloy-2.0.102.apk"
   ]
 }

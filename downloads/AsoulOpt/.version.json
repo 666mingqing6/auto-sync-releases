@@ -1,15 +1,15 @@
 {
-  "tag_name": "Evil",
-  "published_at": "2026-03-15T04:48:34Z",
-  "sync_time": "2026-03-16T02:36:04.419989",
+  "tag_name": "Kanata",
+  "published_at": "2026-04-23T05:28:32Z",
+  "sync_time": "2026-04-24T02:47:38.761620",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Evil.zip",
-      "size": 17910,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Evil/Magisk_AsoulOpt_Evil.zip"
+      "name": "Magisk_AsoulOpt_Kanata.zip",
+      "size": 17300,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Kanata/Magisk_AsoulOpt_Kanata.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Evil.zip"
+    "Magisk_AsoulOpt_Kanata.zip"
   ]
 }
