@@ -1,15 +1,15 @@
 {
-  "tag_name": "Kanata",
-  "published_at": "2026-04-23T05:28:32Z",
-  "sync_time": "2026-04-24T02:47:38.761620",
+  "tag_name": "Shiroko",
+  "published_at": "2026-06-14T10:15:24Z",
+  "sync_time": "2026-06-15T04:25:21.408311",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Kanata.zip",
-      "size": 17300,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Kanata/Magisk_AsoulOpt_Kanata.zip"
+      "name": "Magisk_AsoulOpt_Shiroko.zip",
+      "size": 17443,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Shiroko/Magisk_AsoulOpt_Shiroko.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Kanata.zip"
+    "Magisk_AsoulOpt_Shiroko.zip"
   ]
 }
