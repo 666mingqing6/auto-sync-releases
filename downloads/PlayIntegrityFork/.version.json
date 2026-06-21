@@ -1,15 +1,15 @@
 {
-  "tag_name": "v16",
-  "published_at": "2026-01-09T01:04:17Z",
-  "sync_time": "2026-01-16T13:14:00.038311",
+  "tag_name": "v17",
+  "published_at": "2026-06-20T19:37:00Z",
+  "sync_time": "2026-06-21T04:21:40.812467",
   "assets": [
     {
-      "name": "PlayIntegrityFork-v16.zip",
-      "size": 283340,
-      "download_url": "https://github.com/osm0sis/PlayIntegrityFork/releases/download/v16/PlayIntegrityFork-v16.zip"
+      "name": "PlayIntegrityFork-v17.zip",
+      "size": 285020,
+      "download_url": "https://github.com/osm0sis/PlayIntegrityFork/releases/download/v17/PlayIntegrityFork-v17.zip"
     }
   ],
   "downloaded_files": [
-    "PlayIntegrityFork-v16.zip"
+    "PlayIntegrityFork-v17.zip"
   ]
 }
