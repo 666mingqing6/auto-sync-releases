@@ -1,15 +1,15 @@
 {
-  "tag_name": "v1.4.1",
-  "published_at": "2026-06-21T14:46:38Z",
-  "sync_time": "2026-06-22T04:23:45.157186",
+  "tag_name": "v1.4.2",
+  "published_at": "2026-06-22T13:19:32Z",
+  "sync_time": "2026-06-23T03:41:02.042853",
   "assets": [
     {
-      "name": "Zygisk-Next-1.4.1-780-9d7024c-release.zip",
-      "size": 5898969,
-      "download_url": "https://github.com/Dr-TSNG/ZygiskNext/releases/download/v1.4.1/Zygisk-Next-1.4.1-780-9d7024c-release.zip"
+      "name": "Zygisk-Next-1.4.2-789-119aaa0-release.zip",
+      "size": 7032593,
+      "download_url": "https://github.com/Dr-TSNG/ZygiskNext/releases/download/v1.4.2/Zygisk-Next-1.4.2-789-119aaa0-release.zip"
     }
   ],
   "downloaded_files": [
-    "Zygisk-Next-1.4.1-780-9d7024c-release.zip"
+    "Zygisk-Next-1.4.2-789-119aaa0-release.zip"
   ]
 }
