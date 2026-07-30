@@ -343,15 +343,18 @@ async function handleUrlResolved(id) {
   } catch (e) {
     errMsg = `weapi error: ${e?.message || "unknown"}`;
   }
-  // 兜底：outer/url 302 解析
+  // 兜底：outer/url 302 解析（带国内 IP 头绕过网易云海外 IP 风控）
   try {
+    const chinaIP = randomChinaIP();
     const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
     const resp = await fetch(publicUrl, {
       method: "GET",
       redirect: "manual",
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Referer": "https://music.163.com/"
+        "Referer": "https://music.163.com/",
+        "X-Real-IP": chinaIP,
+        "X-Forwarded-For": chinaIP
       }
     });
     const location = resp.headers.get("location") || "";
