@@ -320,12 +320,14 @@ async function handleUrl(id) {
   return { ok: true, url: publicUrl };
 }
 __name(handleUrl, "handleUrl");
-// 调试版：同时收集 weapi 响应 + 302 manual 行为 + http→https CDN 可达性
+// 解析网易云歌曲的真实 CDN URL（Worker 服务端解析，不受浏览器 CORS 限制）
+// 主方案：weapi 加密请求 /song/enhance/player/url/v1，返回 JSON 里 data[0].url
+// 兜底：outer/url 302 解析（海外 IP 对部分歌曲会拿到 music.163.com/404）
+// 注意：部分歌曲因网易云 IP 风控（Worker 出口在海外），两种方案都可能失败，
+//   此时返回 ok:false，由前端降级为不开音效的正常播放。
 async function handleUrlResolved(id) {
-  const debug = { id, weapi: null, manual: null };
-  const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
-
-  // 1. weapi 请求：收集完整响应
+  let errMsg = "resolve failed";
+  // 主方案：weapi 请求官方 URL 接口
   try {
     const data = await weapiRequest("/weapi/song/enhance/player/url/v1", {
       ids: [String(id)],
@@ -334,39 +336,30 @@ async function handleUrlResolved(id) {
       csrf_token: ""
     });
     const item = data && data.data && data.data[0];
-    debug.weapi = { code: item?.code, hasUrl: !!item?.url, url: (item?.url || "").slice(0, 70), br: item?.br, freeTrialInfo: item?.freeTrialInfo, rawKeys: Object.keys(item || {}) };
     if (item && item.url) {
-      return { ok: true, url: item.url, resolved: true, source: "weapi", debug };
+      return { ok: true, url: item.url, resolved: true, source: "weapi" };
     }
+    errMsg = `weapi no url, code=${item?.code ?? "null"}`;
   } catch (e) {
-    debug.weapi = { error: e?.message || "unknown" };
+    errMsg = `weapi error: ${e?.message || "unknown"}`;
   }
-
-  // 2. manual 302 解析：看 Workers 能否读到 Location
+  // 兜底：outer/url 302 解析
   try {
     const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
-    const resp = await fetch(publicUrl, { method: "GET", redirect: "manual", headers: { "User-Agent": UA, "Referer": "https://music.163.com/" } });
-    const location = resp.headers.get("location") || "";
-    debug.manual = { status: resp.status, location: location.slice(0, 80), locationFull: location, respUrl: (resp.url || "").slice(0, 80), ct: (resp.headers.get("content-type") || "").slice(0, 40) };
-    if (location && /music\.126\.net/.test(location)) {
-      // 测试 http→https 可达性
-      const httpsUrl = location.replace(/^http:/, "https:");
-      try {
-        const headResp = await fetch(httpsUrl, { method: "HEAD", redirect: "follow" });
-        debug.manual.httpsHeadStatus = headResp.status;
-        debug.manual.httpsHeadUrl = (headResp.url || "").slice(0, 80);
-        debug.manual.httpsCors = headResp.headers.get("access-control-allow-origin");
-        debug.manual.httpsCt = headResp.headers.get("content-type");
-      } catch (e) {
-        debug.manual.httpsHeadError = e?.message || "unknown";
+    const resp = await fetch(publicUrl, {
+      method: "GET",
+      redirect: "manual",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Referer": "https://music.163.com/"
       }
-      return { ok: true, url: httpsUrl, resolved: true, source: "redirect+https", debug };
+    });
+    const location = resp.headers.get("location") || "";
+    if (location && /music\.126\.net/.test(location)) {
+      return { ok: true, url: location, resolved: true, source: "redirect" };
     }
-  } catch (e) {
-    debug.manual = { error: e?.message || "unknown" };
-  }
-
-  return { ok: false, error: "all methods failed", debug };
+  } catch (_) { /* ignore fallback failure */ }
+  return { ok: false, error: errMsg };
 }
 __name(handleUrlResolved, "handleUrlResolved");
 async function handlePic(id, src) {
