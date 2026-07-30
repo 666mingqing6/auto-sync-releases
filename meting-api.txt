@@ -321,35 +321,45 @@ async function handleUrl(id) {
 }
 __name(handleUrl, "handleUrl");
 // 解析网易云歌曲的真实 CDN URL（Worker 服务端解析，不受浏览器 CORS 限制）
-// 临时调试版：返回每一跳的 status / location / resp.url，便于定位 Workers 行为
+// 用 weapi 加密直接请求网易云官方 /song/enhance/player/url/v1 接口，
+// 返回 JSON 里的 url 字段即为真实 CDN 地址，完全绕开 302 重定向
+// （Cloudflare Workers 对 302→HTTP 降级重定向的 manual/follow 处理不稳定，
+//  会落到 music.163.com/404）。
 async function handleUrlResolved(id) {
-  const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
-  const headers = { "User-Agent": UA, "Referer": "https://music.163.com/" };
-  let url = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
-  const hops = [];
-  for (let hop = 0; hop < 5; hop++) {
-    let resp;
-    try {
-      resp = await fetch(url, { method: "GET", redirect: "manual", headers });
-    } catch (e) {
-      hops.push({ hop, error: e?.message || "unknown" });
-      return { ok: false, debug: hops };
+  let errMsg = "resolve failed";
+  // 主方案：weapi 请求官方 URL 接口
+  try {
+    const data = await weapiRequest("/weapi/song/enhance/player/url/v1", {
+      ids: [String(id)],
+      level: "standard",
+      encodeType: "mp3",
+      csrf_token: ""
+    });
+    const item = data && data.data && data.data[0];
+    if (item && item.url) {
+      return { ok: true, url: item.url, resolved: true, source: "weapi" };
     }
-    const status = resp.status;
-    const location = resp.headers.get("location") || "";
-    const finalUrl = resp.url || "";
-    const contentType = resp.headers.get("content-type") || "";
-    hops.push({ hop, status, location: location.slice(0, 80), finalUrl: finalUrl.slice(0, 80), contentType });
-    if ([301, 302, 303, 307, 308].includes(status) && location) {
-      url = new URL(location, url).href;
-      continue;
-    }
-    if (/music\.126\.net/.test(finalUrl)) {
-      return { ok: true, url: finalUrl, resolved: true, debug: hops };
-    }
-    break;
+    errMsg = `weapi no url, code=${item?.code ?? "null"}`;
+  } catch (e) {
+    errMsg = `weapi error: ${e?.message || "unknown"}`;
   }
-  return { ok: false, error: "manual no cdn", debug: hops };
+  // 兜底：尝试 302 解析（outer/url 接口）
+  try {
+    const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
+    const resp = await fetch(publicUrl, {
+      method: "GET",
+      redirect: "manual",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Referer": "https://music.163.com/"
+      }
+    });
+    const location = resp.headers.get("location") || "";
+    if (location && /music\.126\.net/.test(location)) {
+      return { ok: true, url: location, resolved: true, source: "redirect" };
+    }
+  } catch (_) { /* ignore fallback failure */ }
+  return { ok: false, error: errMsg };
 }
 __name(handleUrlResolved, "handleUrlResolved");
 async function handlePic(id, src) {
