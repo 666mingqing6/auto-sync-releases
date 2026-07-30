@@ -321,57 +321,35 @@ async function handleUrl(id) {
 }
 __name(handleUrl, "handleUrl");
 // 解析网易云歌曲的真实 CDN URL（Worker 服务端解析，不受浏览器 CORS 限制）
-// 网易云 302 的 Location 一律是 http://m*.music.126.net（HTTP，非 HTTPS），
-// 而 Cloudflare Workers 的 redirect:"follow" 不会跟随 HTTPS→HTTP 降级重定向，
-// 会落到 music.163.com/404。redirect:"manual" 又对部分 302 读不到 Location 头。
-// 因此这里用手动循环：manual 拿响应 → 若是 302 且有 Location 则手动 fetch 下一段；
-// 若 manual 读不到 Location（Cloudflare 透明重写），用 follow 兜底读 resp.url。
+// 临时调试版：返回每一跳的 status / location / resp.url，便于定位 Workers 行为
 async function handleUrlResolved(id) {
   const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
   const headers = { "User-Agent": UA, "Referer": "https://music.163.com/" };
   let url = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
-  let errMsg = "resolve failed";
-  // 手动跟随最多 5 次重定向
+  const hops = [];
   for (let hop = 0; hop < 5; hop++) {
     let resp;
     try {
       resp = await fetch(url, { method: "GET", redirect: "manual", headers });
     } catch (e) {
-      errMsg = `fetch error: ${e?.message || "unknown"}`;
-      break;
+      hops.push({ hop, error: e?.message || "unknown" });
+      return { ok: false, debug: hops };
     }
     const status = resp.status;
     const location = resp.headers.get("location") || "";
-    // manual 模式能读到 Location：手动跳到下一段
+    const finalUrl = resp.url || "";
+    const contentType = resp.headers.get("content-type") || "";
+    hops.push({ hop, status, location: location.slice(0, 80), finalUrl: finalUrl.slice(0, 80), contentType });
     if ([301, 302, 303, 307, 308].includes(status) && location) {
-      url = new URL(location, url).href; // 处理相对/绝对 Location
+      url = new URL(location, url).href;
       continue;
     }
-    // manual 模式读不到 Location（Cloudflare 对某些 302 透明重写）：
-    // 用 follow 兜底，resp.url 即为最终地址
-    if ([301, 302, 303, 307, 308].includes(status) && !location) {
-      try {
-        const followResp = await fetch(url, { method: "GET", redirect: "follow", headers });
-        const finalUrl = followResp.url || "";
-        if (finalUrl && /music\.126\.net/.test(finalUrl)) {
-          return { ok: true, url: finalUrl, resolved: true };
-        }
-        errMsg = `follow bad final url=${finalUrl || "(empty)"}`;
-      } catch (e) {
-        errMsg = `follow error: ${e?.message || "unknown"}`;
-      }
-      break;
-    }
-    // 已到达最终地址：检查是否是 CDN
-    const finalUrl = resp.url || url;
     if (/music\.126\.net/.test(finalUrl)) {
-      return { ok: true, url: finalUrl, resolved: true };
+      return { ok: true, url: finalUrl, resolved: true, debug: hops };
     }
-    // 既不是 302 也不是 CDN：通常是 404 页面（歌曲下架/无版权）
-    errMsg = `unexpected status ${status} url=${finalUrl}`;
     break;
   }
-  return { ok: false, error: errMsg };
+  return { ok: false, error: "manual no cdn", debug: hops };
 }
 __name(handleUrlResolved, "handleUrlResolved");
 async function handlePic(id, src) {
