@@ -321,32 +321,31 @@ async function handleUrl(id) {
 }
 __name(handleUrl, "handleUrl");
 // 解析网易云歌曲的真实 CDN URL（Worker 自己 fetch 跟随重定向，不受 CORS 限制）
-// 通过 music.163.com 的 outer/url 接口获取 302 重定向目标，即为真实 CDN 地址
+// 用 redirect:"follow" 让 Worker 自动跟随 302 到最终音乐文件地址，再读 resp.url
+// （旧版 redirect:"manual" 在 Workers 上对部分 302 读不到 Location 头，导致稳定 502）
 async function handleUrlResolved(id) {
   const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
   let errMsg = "resolve failed";
   try {
     const resp = await fetch(publicUrl, {
       method: "GET",
-      redirect: "manual",
+      redirect: "follow",
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         "Referer": "https://music.163.com/"
       }
     });
-    if ([301, 302, 303, 307, 308].includes(resp.status)) {
-      const location = resp.headers.get("location");
-      if (location && /music\.126\.net/.test(location)) {
-        return { ok: true, url: location, resolved: true };
-      }
+    // 跟随重定向后，resp.url 即为最终地址
+    const finalUrl = resp.url || "";
+    if (finalUrl && /music\.126\.net/.test(finalUrl)) {
+      return { ok: true, url: finalUrl, resolved: true };
     }
-    if (resp.ok) {
-      const finalUrl = resp.url;
-      if (finalUrl && /music\.126\.net/.test(finalUrl)) {
-        return { ok: true, url: finalUrl, resolved: true };
-      }
+    // 兜底：若 follow 未携带最终 URL（理论上不会），再用 Location 头尝试
+    const loc = resp.headers.get("location") || "";
+    if (loc && /music\.126\.net/.test(loc)) {
+      return { ok: true, url: loc, resolved: true };
     }
-    errMsg = `unexpected status ${resp.status}`;
+    errMsg = `unexpected status ${resp.status} url=${finalUrl || "(empty)"}`;
   } catch (e) {
     errMsg = e?.message || "resolve failed";
   }
