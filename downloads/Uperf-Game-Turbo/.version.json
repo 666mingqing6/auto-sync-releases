@@ -1,15 +1,15 @@
 {
-  "tag_name": "Uperf-Game-Turbo.1.48",
-  "published_at": "2026-02-14T03:02:29Z",
-  "sync_time": "2026-02-15T02:28:24.588613",
+  "tag_name": "Uperf-Game-Turbo-1.51",
+  "published_at": "2026-07-31T09:18:45Z",
+  "sync_time": "2026-08-01T02:53:12.487398",
   "assets": [
     {
-      "name": "Uperf_Game_Turbo-1.48.zip",
-      "size": 1952857,
-      "download_url": "https://github.com/yinwanxi/Uperf-Game-Turbo/releases/download/Uperf-Game-Turbo.1.48/Uperf_Game_Turbo-1.48.zip"
+      "name": "Uperf_Game_Turbo-1.51.zip",
+      "size": 1972827,
+      "download_url": "https://github.com/yinwanxi/Uperf-Game-Turbo/releases/download/Uperf-Game-Turbo-1.51/Uperf_Game_Turbo-1.51.zip"
     }
   ],
   "downloaded_files": [
-    "Uperf_Game_Turbo-1.48.zip"
+    "Uperf_Game_Turbo-1.51.zip"
   ]
 }
