@@ -1,26 +1,26 @@
 {
-  "tag_name": "oss-162",
-  "published_at": "2026-06-28T13:52:06Z",
-  "sync_time": "2026-06-29T04:04:33.111313",
+  "tag_name": "oss-164",
+  "published_at": "2026-07-10T08:23:38Z",
+  "sync_time": "2026-08-06T22:05:11.748641",
   "assets": [
     {
-      "name": "HMA-OSS-oss-162-debug.apk",
-      "size": 8837938,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-162/HMA-OSS-oss-162-debug.apk"
+      "name": "HMA-OSS-ZYGISK-oss-164-debug.zip",
+      "size": 11408984,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/HMA-OSS-ZYGISK-oss-164-debug.zip"
     },
     {
-      "name": "HMA-OSS-oss-162-release.apk",
-      "size": 3095202,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-162/HMA-OSS-oss-162-release.apk"
+      "name": "HMA-OSS-ZYGISK-oss-164-release.zip",
+      "size": 2573721,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/HMA-OSS-ZYGISK-oss-164-release.zip"
     },
     {
       "name": "translators.json",
-      "size": 11255,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-162/translators.json"
+      "size": 11775,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/translators.json"
     }
   ],
   "downloaded_files": [
-    "HMA-OSS-oss-162-debug.apk",
-    "HMA-OSS-oss-162-release.apk"
+    "HMA-OSS-ZYGISK-oss-164-debug.zip",
+    "HMA-OSS-ZYGISK-oss-164-release.zip"
   ]
 }
