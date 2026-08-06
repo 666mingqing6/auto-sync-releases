@@ -41,6 +41,7 @@ projects:
     # 这个项目发布的是APK文件
     asset_patterns:
       - "*.apk"
+      - "*.zip"
     target_dir: downloads/HMA-OSS
     include_prerelease: false
     keep_versions: 1
