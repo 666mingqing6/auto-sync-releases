@@ -1,128 +1,110 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+/**
+ * 腾讯云 EdgeOne 边缘函数 — 自建 Meting API
+ *
+ * 替代 Cloudflare Workers 版本（CF Worker 到 music.163.com 的 TLS 握手被 525 封锁）。
+ * EdgeOne 边缘节点为腾讯国内 IP，不被网易云封锁，可正常 fetch weapi。
+ *
+ * 部署步骤：
+ *   1. 登录腾讯云 EdgeOne 控制台 → 站点 → 边缘函数 → 创建函数
+ *   2. 将本文件内容粘贴进去，函数名随意（如 meting-api）
+ *   3. 触发规则：匹配 Host 等于你的加速域名（如 meting-api.646474.xyz），
+ *      路径匹配全部（或正则 .*）
+ *   4. 需要先在 EdgeOne 接入该域名（DNS 接入或 CNAME 接入）
+ *   5. 部署后将 js/player.js 的 apiUrl 指向 EdgeOne 加速域名
+ *
+ * 与 Cloudflare Workers 版本的差异：仅入口语法不同（addEventListener vs export default），
+ * 加密/weapi/handler 逻辑完全一致。
+ */
 
-// index.js
+// ============================================================
+//  MD5 (RFC 1321) — 纯 JS，Web Crypto 不支持 MD5
+// ============================================================
+
 function md5Raw(input) {
-  function rotateLeft(x, n) {
-    return x << n | x >>> 32 - n;
-  }
-  __name(rotateLeft, "rotateLeft");
-  function addUnsigned(x, y) {
-    return (x & 2147483647) + (y & 2147483647) ^ x & 2147483648 ^ y & 2147483648;
-  }
-  __name(addUnsigned, "addUnsigned");
-  const bytes = typeof input === "string" ? new TextEncoder().encode(input) : input;
+  function rotateLeft(x, n) { return (x << n) | (x >>> (32 - n)); }
+  function addUnsigned(x, y) { return ((x & 0x7fffffff) + (y & 0x7fffffff)) ^ (x & 0x80000000) ^ (y & 0x80000000); }
+
+  const bytes = typeof input === 'string' ? new TextEncoder().encode(input) : input;
   const len = bytes.length;
-  const padded = new Uint8Array((len + 8 >>> 6) + 1 << 6);
+  const padded = new Uint8Array((((len + 8) >>> 6) + 1) << 6);
   padded.set(bytes);
-  padded[len] = 128;
+  padded[len] = 0x80;
   const view = new DataView(padded.buffer);
   view.setUint32(padded.length - 8, len * 8, true);
-  let a = 1732584193, b = 4023233417, c = 2562383102, d = 271733878;
+
+  let a = 0x67452301, b = 0xefcdab89, c = 0x98badcfe, d = 0x10325476;
+
   for (let i = 0; i < padded.length; i += 64) {
-    let f = function(x, y, z) {
-      return x & y | ~x & z;
-    }, g = function(x, y, z) {
-      return x & z | y & ~z;
-    }, h = function(x, y, z) {
-      return x ^ y ^ z;
-    }, i2 = function(x, y, z) {
-      return y ^ (x | ~z);
-    }, op = function(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
-      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, f(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
-    }, opG = function(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
-      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, g(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
-    }, opH = function(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
-      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, h(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
-    }, opI = function(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
-      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, i2(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
-    };
-    __name(f, "f");
-    __name(g, "g");
-    __name(h, "h");
-    __name(i2, "i");
-    __name(op, "op");
-    __name(opG, "opG");
-    __name(opH, "opH");
-    __name(opI, "opI");
-    const chunk = new Uint32Array(padded.buffer.slice(i2, i2 + 64));
-    for (let j = 0; j < 16; j++) chunk[j] = new DataView(padded.buffer).getUint32(i2 + j * 4, true);
+    const chunk = new Uint32Array(padded.buffer.slice(i, i + 64));
+    for (let j = 0; j < 16; j++) chunk[j] = (new DataView(padded.buffer)).getUint32(i + j * 4, true);
+
     let aa = a, bb = b, cc = c, dd = d;
+
+    function f(x, y, z) { return (x & y) | (~x & z); }
+    function g(x, y, z) { return (x & z) | (y & ~z); }
+    function h(x, y, z) { return x ^ y ^ z; }
+    function i(x, y, z) { return y ^ (x | ~z); }
+
     const S11 = 7, S12 = 12, S13 = 17, S14 = 22;
     const S21 = 5, S22 = 9, S23 = 14, S24 = 20;
     const S31 = 4, S32 = 11, S33 = 16, S34 = 23;
     const S41 = 6, S42 = 10, S43 = 15, S44 = 21;
+
     const T = [];
     for (let j = 1; j <= 64; j++) T[j] = Math.floor((1 << 30) * Math.abs(Math.sin(j)));
-    a = op(a, b, c, d, 0, S11, 1);
-    d = op(d, a, b, c, 1, S12, 2);
-    c = op(c, d, a, b, 2, S13, 3);
-    b = op(b, c, d, a, 3, S14, 4);
-    a = op(a, b, c, d, 4, S11, 5);
-    d = op(d, a, b, c, 5, S12, 6);
-    c = op(c, d, a, b, 6, S13, 7);
-    b = op(b, c, d, a, 7, S14, 8);
-    a = op(a, b, c, d, 8, S11, 9);
-    d = op(d, a, b, c, 9, S12, 10);
-    c = op(c, d, a, b, 10, S13, 11);
-    b = op(b, c, d, a, 11, S14, 12);
-    a = op(a, b, c, d, 12, S11, 13);
-    d = op(d, a, b, c, 13, S12, 14);
-    c = op(c, d, a, b, 14, S13, 15);
-    b = op(b, c, d, a, 15, S14, 16);
-    a = opG(a, b, c, d, 1, S21, 17);
-    d = opG(d, a, b, c, 6, S22, 18);
-    c = opG(c, d, a, b, 11, S23, 19);
-    b = opG(b, c, d, a, 0, S24, 20);
-    a = opG(a, b, c, d, 5, S21, 21);
-    d = opG(d, a, b, c, 10, S22, 22);
-    c = opG(c, d, a, b, 15, S23, 23);
-    b = opG(b, c, d, a, 4, S24, 24);
-    a = opG(a, b, c, d, 9, S21, 25);
-    d = opG(d, a, b, c, 14, S22, 26);
-    c = opG(c, d, a, b, 3, S23, 27);
-    b = opG(b, c, d, a, 8, S24, 28);
-    a = opG(a, b, c, d, 13, S21, 29);
-    d = opG(d, a, b, c, 2, S22, 30);
-    c = opG(c, d, a, b, 7, S23, 31);
-    b = opG(b, c, d, a, 12, S24, 32);
-    a = opH(a, b, c, d, 5, S31, 33);
-    d = opH(d, a, b, c, 8, S32, 34);
-    c = opH(c, d, a, b, 11, S33, 35);
-    b = opH(b, c, d, a, 14, S34, 36);
-    a = opH(a, b, c, d, 1, S31, 37);
-    d = opH(d, a, b, c, 4, S32, 38);
-    c = opH(c, d, a, b, 7, S33, 39);
-    b = opH(b, c, d, a, 10, S34, 40);
-    a = opH(a, b, c, d, 13, S31, 41);
-    d = opH(d, a, b, c, 0, S32, 42);
-    c = opH(c, d, a, b, 3, S33, 43);
-    b = opH(b, c, d, a, 6, S34, 44);
-    a = opH(a, b, c, d, 9, S31, 45);
-    d = opH(d, a, b, c, 12, S32, 46);
-    c = opH(c, d, a, b, 15, S33, 47);
-    b = opH(b, c, d, a, 2, S34, 48);
-    a = opI(a, b, c, d, 0, S41, 49);
-    d = opI(d, a, b, c, 7, S42, 50);
-    c = opI(c, d, a, b, 14, S43, 51);
-    b = opI(b, c, d, a, 5, S44, 52);
-    a = opI(a, b, c, d, 12, S41, 53);
-    d = opI(d, a, b, c, 3, S42, 54);
-    c = opI(c, d, a, b, 10, S43, 55);
-    b = opI(b, c, d, a, 1, S44, 56);
-    a = opI(a, b, c, d, 8, S41, 57);
-    d = opI(d, a, b, c, 15, S42, 58);
-    c = opI(c, d, a, b, 6, S43, 59);
-    b = opI(b, c, d, a, 13, S44, 60);
-    a = opI(a, b, c, d, 4, S41, 61);
-    d = opI(d, a, b, c, 11, S42, 62);
-    c = opI(c, d, a, b, 2, S43, 63);
-    b = opI(b, c, d, a, 9, S44, 64);
-    a = addUnsigned(a, aa);
-    b = addUnsigned(b, bb);
-    c = addUnsigned(c, cc);
-    d = addUnsigned(d, dd);
+
+    function op(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
+      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, f(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
+    }
+    a = op(a, b, c, d, 0, S11, 1);  d = op(d, a, b, c, 1, S12, 2);
+    c = op(c, d, a, b, 2, S13, 3);  b = op(b, c, d, a, 3, S14, 4);
+    a = op(a, b, c, d, 4, S11, 5);  d = op(d, a, b, c, 5, S12, 6);
+    c = op(c, d, a, b, 6, S13, 7);  b = op(b, c, d, a, 7, S14, 8);
+    a = op(a, b, c, d, 8, S11, 9);  d = op(d, a, b, c, 9, S12, 10);
+    c = op(c, d, a, b, 10, S13, 11); b = op(b, c, d, a, 11, S14, 12);
+    a = op(a, b, c, d, 12, S11, 13); d = op(d, a, b, c, 13, S12, 14);
+    c = op(c, d, a, b, 14, S13, 15); b = op(b, c, d, a, 15, S14, 16);
+
+    function opG(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
+      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, g(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
+    }
+    a = opG(a, b, c, d, 1, S21, 17);  d = opG(d, a, b, c, 6, S22, 18);
+    c = opG(c, d, a, b, 11, S23, 19); b = opG(b, c, d, a, 0, S24, 20);
+    a = opG(a, b, c, d, 5, S21, 21);  d = opG(d, a, b, c, 10, S22, 22);
+    c = opG(c, d, a, b, 15, S23, 23); b = opG(b, c, d, a, 4, S24, 24);
+    a = opG(a, b, c, d, 9, S21, 25);  d = opG(d, a, b, c, 14, S22, 26);
+    c = opG(c, d, a, b, 3, S23, 27);  b = opG(b, c, d, a, 8, S24, 28);
+    a = opG(a, b, c, d, 13, S21, 29); d = opG(d, a, b, c, 2, S22, 30);
+    c = opG(c, d, a, b, 7, S23, 31);  b = opG(b, c, d, a, 12, S24, 32);
+
+    function opH(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
+      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, h(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
+    }
+    a = opH(a, b, c, d, 5, S31, 33);  d = opH(d, a, b, c, 8, S32, 34);
+    c = opH(c, d, a, b, 11, S33, 35); b = opH(b, c, d, a, 14, S34, 36);
+    a = opH(a, b, c, d, 1, S31, 37);  d = opH(d, a, b, c, 4, S32, 38);
+    c = opH(c, d, a, b, 7, S33, 39);  b = opH(b, c, d, a, 10, S34, 40);
+    a = opH(a, b, c, d, 13, S31, 41); d = opH(d, a, b, c, 0, S32, 42);
+    c = opH(c, d, a, b, 3, S33, 43);  b = opH(b, c, d, a, 6, S34, 44);
+    a = opH(a, b, c, d, 9, S31, 45);  d = opH(d, a, b, c, 12, S32, 46);
+    c = opH(c, d, a, b, 15, S33, 47); b = opH(b, c, d, a, 2, S34, 48);
+
+    function opI(aa_val, bb_val, cc_val, dd_val, k, s, i_idx) {
+      return addUnsigned(rotateLeft(addUnsigned(addUnsigned(aa_val, i(bb_val, cc_val, dd_val)), addUnsigned(chunk[k], T[i_idx])), s), bb_val);
+    }
+    a = opI(a, b, c, d, 0, S41, 49);  d = opI(d, a, b, c, 7, S42, 50);
+    c = opI(c, d, a, b, 14, S43, 51); b = opI(b, c, d, a, 5, S44, 52);
+    a = opI(a, b, c, d, 12, S41, 53); d = opI(d, a, b, c, 3, S42, 54);
+    c = opI(c, d, a, b, 10, S43, 55); b = opI(b, c, d, a, 1, S44, 56);
+    a = opI(a, b, c, d, 8, S41, 57);  d = opI(d, a, b, c, 15, S42, 58);
+    c = opI(c, d, a, b, 6, S43, 59);  b = opI(b, c, d, a, 13, S44, 60);
+    a = opI(a, b, c, d, 4, S41, 61);  d = opI(d, a, b, c, 11, S42, 62);
+    c = opI(c, d, a, b, 2, S43, 63);  b = opI(b, c, d, a, 9, S44, 64);
+
+    a = addUnsigned(a, aa); b = addUnsigned(b, bb);
+    c = addUnsigned(c, cc); d = addUnsigned(d, dd);
   }
+
   const result = new Uint8Array(16);
   const dv = new DataView(result.buffer);
   dv.setUint32(0, a, true);
@@ -131,350 +113,350 @@ function md5Raw(input) {
   dv.setUint32(12, d, true);
   return result;
 }
-__name(md5Raw, "md5Raw");
+
+// ============================================================
+//  Crypto helpers
+// ============================================================
+
 function randomHex(length) {
   const bytes = new Uint8Array(length / 2);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
 }
-__name(randomHex, "randomHex");
+
 function bytesToBase64(bytes) {
-  let binary = "";
-  bytes.forEach((b) => binary += String.fromCharCode(b));
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
   return btoa(binary);
 }
-__name(bytesToBase64, "bytesToBase64");
+
 async function aesEncrypt(plaintext, keyStr, ivStr) {
   const encoder = new TextEncoder();
   const data = encoder.encode(plaintext);
   const key = encoder.encode(keyStr);
   const iv = encoder.encode(ivStr);
+
   const cryptoKey = await crypto.subtle.importKey(
-    "raw",
-    key,
-    { name: "AES-CBC" },
-    false,
-    ["encrypt"]
+    'raw', key, { name: 'AES-CBC' }, false, ['encrypt']
   );
   const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-CBC", iv },
-    cryptoKey,
-    data
+    { name: 'AES-CBC', iv }, cryptoKey, data
   );
   return bytesToBase64(new Uint8Array(encrypted));
 }
-__name(aesEncrypt, "aesEncrypt");
+
 function modPow(base, exp, mod) {
   let result = 1n;
   base = base % mod;
   while (exp > 0n) {
-    if (exp & 1n) result = result * base % mod;
+    if (exp & 1n) result = (result * base) % mod;
     exp >>= 1n;
-    base = base * base % mod;
+    base = (base * base) % mod;
   }
   return result;
 }
-__name(modPow, "modPow");
+
 function rsaEncrypt(text) {
   const modulus = BigInt(
-    "0x00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7"
+    '0x00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725' +
+    '152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ec' +
+    'bda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813' +
+    'cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7'
   );
   const pubkey = 0x010001n;
-  const reversed = text.split("").reverse().join("");
-  const hex = Array.from(new TextEncoder().encode(reversed)).map((b) => b.toString(16).padStart(2, "0")).join("");
-  const m = BigInt("0x" + hex);
+
+  const reversed = text.split('').reverse().join('');
+  const hex = Array.from(new TextEncoder().encode(reversed))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+  const m = BigInt('0x' + hex);
   const result = modPow(m, pubkey, modulus);
-  return result.toString(16).padStart(256, "0");
+  return result.toString(16).padStart(256, '0');
 }
-__name(rsaEncrypt, "rsaEncrypt");
-var NONCE = "0CoJUm6Qyw8W8jud";
-var IV = "0102030405060708";
-var FALLBACK_ENCSECKEY = "85302b818aea19b68db899c25dac229412d9bba9b3fcfe4f714dc016bc1686fc446a08844b1f8327fd9cb623cc189be00c5a365ac835e93d4858ee66f43fdc59e32aaed3ef24f0675d70172ef688d376a4807228c55583fe5bac647d10ecef15220feef61477c28cae8406f6f9896ed329d6db9f88757e31848a6c2ce2f94308";
+
+// ============================================================
+//  Netease weapi encryption
+// ============================================================
+
+const NONCE = '0CoJUm6Qyw8W8jud';
+const IV = '0102030405060708';
+const FALLBACK_ENCSECKEY =
+  '85302b818aea19b68db899c25dac229412d9bba9b3fcfe4f714dc016bc1686fc' +
+  '446a08844b1f8327fd9cb623cc189be00c5a365ac835e93d4858ee66f43fdc59' +
+  'e32aaed3ef24f0675d70172ef688d376a4807228c55583fe5bac647d10ecef15' +
+  '220feef61477c28cae8406f6f9896ed329d6db9f88757e31848a6c2ce2f94308';
+
 async function weapiEncrypt(object) {
   const body = JSON.stringify(object);
+
   let skey;
-  try {
-    skey = randomHex(16);
-  } catch (_) {
-    skey = "B3v3kH4vRPWRJFfH";
-  }
+  try { skey = randomHex(16); } catch (_) { skey = 'B3v3kH4vRPWRJFfH'; }
+
   const firstPass = await aesEncrypt(body, NONCE, IV);
   const params = await aesEncrypt(firstPass, skey, IV);
+
   let encSecKey;
   try {
     encSecKey = rsaEncrypt(skey);
   } catch (_) {
     encSecKey = FALLBACK_ENCSECKEY;
   }
+
   return { params, encSecKey };
 }
-__name(weapiEncrypt, "weapiEncrypt");
+
+// ============================================================
+//  Netease API 请求
+// ============================================================
+
 function randomChinaIP() {
-  const base = 112 << 24 | 90 << 16;
-  const range = 1 << 16 | 35 << 8 | 255;
+  const base = (112 << 24) | (90 << 16);
+  const range = (1 << 16) | (35 << 8) | 255;
   const ip = base + Math.floor(Math.random() * range);
-  return `${ip >> 24 & 255}.${ip >> 16 & 255}.${ip >> 8 & 255}.${ip & 255}`;
+  return `${(ip >> 24) & 0xff}.${(ip >> 16) & 0xff}.${(ip >> 8) & 0xff}.${ip & 0xff}`;
 }
-__name(randomChinaIP, "randomChinaIP");
+
 function buildHeaders() {
   return {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Referer": "https://music.163.com/",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Cookie": "appver=8.2.30; os=iPhone OS; osver=15.0; EVNSM=1.0.0; buildver=2206; channel=distribution; machineid=iPhone13.3",
-    "X-Real-IP": randomChinaIP()
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Referer': 'https://music.163.com/',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': 'appver=8.2.30; os=iPhone OS; osver=15.0; EVNSM=1.0.0; buildver=2206; channel=distribution; machineid=iPhone13.3',
+    'X-Real-IP': randomChinaIP(),
   };
 }
-__name(buildHeaders, "buildHeaders");
+
 async function weapiRequest(path, body) {
   const encrypted = await weapiEncrypt(body);
   const formBody = `params=${encodeURIComponent(encrypted.params)}&encSecKey=${encodeURIComponent(encrypted.encSecKey)}`;
+
   const url = `https://music.163.com${path}`;
   const resp = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: buildHeaders(),
-    body: formBody
+    body: formBody,
   });
   return resp.json();
 }
-__name(weapiRequest, "weapiRequest");
+
+// ============================================================
+//  netease_encryptId — 用于构造图片直链
+// ============================================================
+
 function neteaseEncryptId(id) {
-  const magic = "3go8&$8*3*3h0k(2)2";
+  const magic = '3go8&$8*3*3h0k(2)2';
   const bytes = new Uint8Array(id.length);
   for (let i = 0; i < id.length; i++) {
     bytes[i] = id.charCodeAt(i) ^ magic.charCodeAt(i % magic.length);
   }
   const hash = md5Raw(bytes);
   const b64 = bytesToBase64(hash);
-  return b64.replace(/\//g, "_").replace(/\+/g, "-");
+  return b64.replace(/\//g, '_').replace(/\+/g, '-');
 }
-__name(neteaseEncryptId, "neteaseEncryptId");
+
 function extractPicId(picUrl) {
-  if (!picUrl) return "";
+  if (!picUrl) return '';
   const match = picUrl.match(/\/(\d+)\.(jpg|png|webp)/);
-  return match ? match[1] : "";
+  return match ? match[1] : '';
 }
-__name(extractPicId, "extractPicId");
-var CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type"
+
+// ============================================================
+//  API 处理器
+// ============================================================
+
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
 };
+
 async function handlePlaylist(id, workerOrigin) {
-  const playlistData = await weapiRequest("/weapi/v3/playlist/detail", {
-    id,
-    n: 1e5,
-    s: 0
+  const playlistData = await weapiRequest('/weapi/v3/playlist/detail', {
+    id: id,
+    n: 100000,
+    s: 0,
   });
+
   if (!playlistData.playlist || !playlistData.playlist.trackIds) {
     return [];
   }
+
   const trackIds = playlistData.playlist.trackIds;
   if (!trackIds.length) return [];
+
   const allTracks = [];
   const BATCH = 500;
+
   for (let i = 0; i < trackIds.length; i += BATCH) {
     const batch = trackIds.slice(i, i + BATCH);
-    const c = JSON.stringify(batch.map((t) => ({ id: t.id, v: 0 })));
-    const songData = await weapiRequest("/weapi/v3/song/detail", { c });
+    const c = JSON.stringify(batch.map(t => ({ id: t.id, v: 0 })));
+    const songData = await weapiRequest('/weapi/v3/song/detail', { c });
     if (songData.songs) {
       allTracks.push(...songData.songs);
     }
   }
-  return allTracks.map((track) => {
-    const picUrl = track.al && track.al.picUrl ? track.al.picUrl : "";
+
+  return allTracks.map(track => {
+    const picUrl = (track.al && track.al.picUrl) ? track.al.picUrl : '';
     const picId = extractPicId(picUrl) || track.id;
-    const picSrc = picUrl ? `&src=${encodeURIComponent(picUrl)}` : "";
+    const picSrc = picUrl ? `&src=${encodeURIComponent(picUrl)}` : '';
     return {
       name: track.name,
-      artist: (track.ar || []).map((a) => a.name).join("/"),
+      artist: (track.ar || []).map(a => a.name).join('/'),
       url: `${workerOrigin}?server=netease&type=url&id=${track.id}`,
       pic: `${workerOrigin}?server=netease&type=pic&id=${picId}${picSrc}`,
-      lrc: `${workerOrigin}?server=netease&type=lrc&id=${track.id}`
+      lrc: `${workerOrigin}?server=netease&type=lrc&id=${track.id}`,
     };
   });
 }
-__name(handlePlaylist, "handlePlaylist");
+
 async function handleSong(id, workerOrigin) {
-  const data = await weapiRequest("/weapi/v3/song/detail", {
-    c: JSON.stringify([{ id, v: 0 }])
+  const data = await weapiRequest('/weapi/v3/song/detail', {
+    c: JSON.stringify([{ id: id, v: 0 }]),
   });
+
   if (!data.songs || !data.songs[0]) {
     return [];
   }
+
   const song = data.songs[0];
-  const picUrl = song.al && song.al.picUrl ? song.al.picUrl : "";
+  const picUrl = (song.al && song.al.picUrl) ? song.al.picUrl : '';
   const picId = extractPicId(picUrl) || song.id;
-  const picSrc = picUrl ? `&src=${encodeURIComponent(picUrl)}` : "";
+  const picSrc = picUrl ? `&src=${encodeURIComponent(picUrl)}` : '';
+
   return [{
     name: song.name,
-    artist: (song.ar || []).map((a) => a.name).join("/"),
+    artist: (song.ar || []).map(a => a.name).join('/'),
     url: `${workerOrigin}?server=netease&type=url&id=${song.id}`,
     pic: `${workerOrigin}?server=netease&type=pic&id=${picId}${picSrc}`,
-    lrc: `${workerOrigin}?server=netease&type=lrc&id=${song.id}`
+    lrc: `${workerOrigin}?server=netease&type=lrc&id=${song.id}`,
   }];
 }
-__name(handleSong, "handleSong");
+
 async function handleUrl(id) {
+  // EdgeOne 边缘节点为国内 IP，理论上可直接 fetch weapi 拿真实 CDN，
+  // 但为统一行为 + 避免网易云对边缘节点的潜在风控，仍用 302 到公开直链，
+  // 让用户浏览器自己的 IP 去跟网易云 302，最稳定
   const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
   return { ok: true, url: publicUrl };
 }
-__name(handleUrl, "handleUrl");
-// 解析网易云歌曲的真实 CDN URL（Worker 服务端解析，不受浏览器 CORS 限制）
-// 主方案：weapi 加密请求 /song/enhance/player/url/v1，返回 JSON 里 data[0].url
-// 兜底：outer/url 302 解析（海外 IP 对部分歌曲会拿到 music.163.com/404）
-// 注意：部分歌曲因网易云 IP 风控（Worker 出口在海外），两种方案都可能失败，
-//   此时返回 ok:false，由前端降级为不开音效的正常播放。
-async function handleUrlResolved(id) {
-  let errMsg = "resolve failed";
-  // 主方案：weapi 请求官方 URL 接口
-  try {
-    const data = await weapiRequest("/weapi/song/enhance/player/url/v1", {
-      ids: [String(id)],
-      level: "standard",
-      encodeType: "mp3",
-      csrf_token: ""
-    });
-    const item = data && data.data && data.data[0];
-    if (item && item.url) {
-      return { ok: true, url: item.url, resolved: true, source: "weapi" };
-    }
-    errMsg = `weapi no url, code=${item?.code ?? "null"}`;
-  } catch (e) {
-    errMsg = `weapi error: ${e?.message || "unknown"}`;
-  }
-  // 兜底：outer/url 302 解析（带国内 IP 头绕过网易云海外 IP 风控）
-  try {
-    const chinaIP = randomChinaIP();
-    const publicUrl = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
-    const resp = await fetch(publicUrl, {
-      method: "GET",
-      redirect: "manual",
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Referer": "https://music.163.com/",
-        "X-Real-IP": chinaIP,
-        "X-Forwarded-For": chinaIP
-      }
-    });
-    const location = resp.headers.get("location") || "";
-    if (location && /music\.126\.net/.test(location)) {
-      return { ok: true, url: location, resolved: true, source: "redirect" };
-    }
-  } catch (_) { /* ignore fallback failure */ }
-  return { ok: false, error: errMsg };
-}
-__name(handleUrlResolved, "handleUrlResolved");
+
 async function handlePic(id, src) {
   if (src) {
     let url = decodeURIComponent(src);
-    url = url.replace(/param=\d+y\d+/, "param=800y800");
-    if (!url.includes("param=")) {
-      url += (url.includes("?") ? "&" : "?") + "param=800y800";
+    url = url.replace(/param=\d+y\d+/, 'param=800y800');
+    if (!url.includes('param=')) {
+      url += (url.includes('?') ? '&' : '?') + 'param=800y800';
     }
     return url;
   }
+
   const encryptedId = neteaseEncryptId(id);
   return `https://p3.music.126.net/${encryptedId}/${id}.jpg?param=800y800`;
 }
-__name(handlePic, "handlePic");
+
 async function handleLrc(id) {
-  const data = await weapiRequest("/weapi/song/lyric", {
-    id,
-    os: "linux",
+  const data = await weapiRequest('/weapi/song/lyric', {
+    id: id,
+    os: 'linux',
     lv: -1,
     kv: -1,
-    tv: -1
+    tv: -1,
   });
-  return data.lrc ? data.lrc.lyric || "" : "";
+  return data.lrc ? (data.lrc.lyric || '') : '';
 }
-__name(handleLrc, "handleLrc");
-var index_default = {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const { searchParams } = url;
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: CORS });
-    }
-    const server = searchParams.get("server") || "netease";
-    const type = searchParams.get("type") || "playlist";
-    const id = searchParams.get("id");
-    if (!id) {
-      return new Response(
-        JSON.stringify({ error: "missing id parameter" }),
-        { status: 400, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } }
-      );
-    }
-    if (server !== "netease") {
-      return new Response(
-        JSON.stringify({ error: `server "${server}" not yet supported` }),
-        { status: 400, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } }
-      );
-    }
-    try {
-      switch (type) {
-        case "playlist": {
-          const result = await handlePlaylist(id, url.origin);
-          return new Response(JSON.stringify(result), {
-            headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" }
-          });
-        }
-        case "song": {
-          const result = await handleSong(id, url.origin);
-          return new Response(JSON.stringify(result), {
-            headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" }
-          });
-        }
-        case "url": {
-          const format = searchParams.get("format");
-          if (format === "json") {
-            const resolved = await handleUrlResolved(id);
-            return new Response(JSON.stringify(resolved), {
-              status: resolved.ok ? 200 : 502,
-              headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" }
-            });
-          }
-          const result = await handleUrl(id);
-          if (result && result.ok) {
-            return Response.redirect(result.url, 302);
-          }
-          return new Response(JSON.stringify(result || { error: "url not found" }), {
-            status: 404,
-            headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" }
-          });
-        }
-        case "pic": {
-          const src = searchParams.get("src");
-          const picUrl = await handlePic(id, src);
-          if (picUrl) {
-            return Response.redirect(picUrl, 302);
-          }
-          return new Response(JSON.stringify({ error: "pic not found" }), {
-            status: 404,
-            headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" }
-          });
-        }
-        case "lrc": {
-          const lrc = await handleLrc(id);
-          return new Response(lrc || "[00:00.00]\u6682\u65E0\u6B4C\u8BCD", {
-            headers: { ...CORS, "Content-Type": "text/plain; charset=utf-8" }
-          });
-        }
-        default:
-          return new Response(
-            JSON.stringify({ error: `unknown type "${type}"` }),
-            { status: 400, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } }
-          );
-      }
-    } catch (err) {
-      return new Response(
-        JSON.stringify({ error: err.message || "internal error" }),
-        { status: 500, headers: { ...CORS, "Content-Type": "application/json; charset=utf-8" } }
-      );
-    }
+
+// ============================================================
+//  EdgeOne 边缘函数入口
+// ============================================================
+
+async function handleRequest(request) {
+  const url = new URL(request.url);
+  const { searchParams } = url;
+
+  // OPTIONS 预检
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { headers: CORS });
   }
-};
-export {
-  index_default as default
-};
-//# sourceMappingURL=index.js.map
+
+  const server = searchParams.get('server') || 'netease';
+  const type = searchParams.get('type') || 'playlist';
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return new Response(
+      JSON.stringify({ error: 'missing id parameter' }),
+      { status: 400, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' } }
+    );
+  }
+
+  if (server !== 'netease') {
+    return new Response(
+      JSON.stringify({ error: `server "${server}" not yet supported` }),
+      { status: 400, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' } }
+    );
+  }
+
+  try {
+    switch (type) {
+      case 'playlist': {
+        const result = await handlePlaylist(id, url.origin);
+        return new Response(JSON.stringify(result), {
+          headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' },
+        });
+      }
+
+      case 'song': {
+        const result = await handleSong(id, url.origin);
+        return new Response(JSON.stringify(result), {
+          headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' },
+        });
+      }
+
+      case 'url': {
+        const result = await handleUrl(id);
+        if (result && result.ok) {
+          return Response.redirect(result.url, 302);
+        }
+        return new Response(JSON.stringify(result || { error: 'url not found' }), {
+          status: 404,
+          headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' },
+        });
+      }
+
+      case 'pic': {
+        const src = searchParams.get('src');
+        const picUrl = await handlePic(id, src);
+        if (picUrl) {
+          return Response.redirect(picUrl, 302);
+        }
+        return new Response(JSON.stringify({ error: 'pic not found' }), {
+          status: 404,
+          headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' },
+        });
+      }
+
+      case 'lrc': {
+        const lrc = await handleLrc(id);
+        return new Response(lrc || '[00:00.00]暂无歌词', {
+          headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
+        });
+      }
+
+      default:
+        return new Response(
+          JSON.stringify({ error: `unknown type "${type}"` }),
+          { status: 400, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' } }
+        );
+    }
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ error: err.message || 'internal error' }),
+      { status: 500, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8' } }
+    );
+  }
+}
+
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request));
+});
