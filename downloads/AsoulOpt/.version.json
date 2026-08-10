@@ -1,15 +1,15 @@
 {
-  "tag_name": "Shiroko",
-  "published_at": "2026-06-14T10:15:24Z",
-  "sync_time": "2026-06-15T04:25:21.408311",
+  "tag_name": "Ibuki",
+  "published_at": "2026-08-09T04:44:28Z",
+  "sync_time": "2026-08-10T01:52:49.194225",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Shiroko.zip",
-      "size": 17443,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Shiroko/Magisk_AsoulOpt_Shiroko.zip"
+      "name": "Magisk_AsoulOpt_Ibuki.zip",
+      "size": 17545,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Ibuki/Magisk_AsoulOpt_Ibuki.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Shiroko.zip"
+    "Magisk_AsoulOpt_Ibuki.zip"
   ]
 }

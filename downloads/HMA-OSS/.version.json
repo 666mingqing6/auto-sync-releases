@@ -1,26 +1,26 @@
 {
-  "tag_name": "oss-164",
-  "published_at": "2026-07-10T08:23:38Z",
-  "sync_time": "2026-08-06T22:05:11.748641",
+  "tag_name": "oss-166",
+  "published_at": "2026-08-09T11:46:07Z",
+  "sync_time": "2026-08-10T01:52:48.470059",
   "assets": [
     {
-      "name": "HMA-OSS-ZYGISK-oss-164-debug.zip",
-      "size": 11408984,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/HMA-OSS-ZYGISK-oss-164-debug.zip"
+      "name": "HMA-OSS-ZYGISK-oss-166-debug.zip",
+      "size": 11434253,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-166/HMA-OSS-ZYGISK-oss-166-debug.zip"
     },
     {
-      "name": "HMA-OSS-ZYGISK-oss-164-release.zip",
-      "size": 2573721,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/HMA-OSS-ZYGISK-oss-164-release.zip"
+      "name": "HMA-OSS-ZYGISK-oss-166-release.zip",
+      "size": 2588471,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-166/HMA-OSS-ZYGISK-oss-166-release.zip"
     },
     {
       "name": "translators.json",
-      "size": 11775,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-164/translators.json"
+      "size": 12425,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-166/translators.json"
     }
   ],
   "downloaded_files": [
-    "HMA-OSS-ZYGISK-oss-164-debug.zip",
-    "HMA-OSS-ZYGISK-oss-164-release.zip"
+    "HMA-OSS-ZYGISK-oss-166-debug.zip",
+    "HMA-OSS-ZYGISK-oss-166-release.zip"
   ]
 }
