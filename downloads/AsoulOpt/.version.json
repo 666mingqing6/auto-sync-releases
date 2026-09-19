@@ -1,15 +1,15 @@
 {
-  "tag_name": "Ibuki",
-  "published_at": "2026-08-09T04:44:28Z",
-  "sync_time": "2026-08-10T01:52:49.194225",
+  "tag_name": "Kana",
+  "published_at": "2026-09-18T20:24:34Z",
+  "sync_time": "2026-09-19T03:36:18.814847",
   "assets": [
     {
-      "name": "Magisk_AsoulOpt_Ibuki.zip",
-      "size": 17545,
-      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Ibuki/Magisk_AsoulOpt_Ibuki.zip"
+      "name": "Magisk_AsoulOpt_Kana.zip",
+      "size": 19491,
+      "download_url": "https://github.com/nakixii/Magisk_AsoulOpt/releases/download/Kana/Magisk_AsoulOpt_Kana.zip"
     }
   ],
   "downloaded_files": [
-    "Magisk_AsoulOpt_Ibuki.zip"
+    "Magisk_AsoulOpt_Kana.zip"
   ]
 }
