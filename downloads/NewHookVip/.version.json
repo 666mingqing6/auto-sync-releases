@@ -1,15 +1,15 @@
 {
-  "tag_name": "26042500-4.1.6",
-  "published_at": "2026-04-24T16:01:38Z",
-  "sync_time": "2026-04-25T02:35:43.329759",
+  "tag_name": "26101521-4.1.7",
+  "published_at": "2026-10-15T13:59:56Z",
+  "sync_time": "2026-10-16T03:32:33.399349",
   "assets": [
     {
-      "name": "HookVip-v4.1.6-release.Apk",
-      "size": 7383734,
-      "download_url": "https://github.com/Xposed-Modules-Repo/top.hookvip.pro/releases/download/26042500-4.1.6/HookVip-v4.1.6-release.Apk"
+      "name": "HookVip-v4.1.7-release.Apk",
+      "size": 7654714,
+      "download_url": "https://github.com/Xposed-Modules-Repo/top.hookvip.pro/releases/download/26101521-4.1.7/HookVip-v4.1.7-release.Apk"
     }
   ],
   "downloaded_files": [
-    "HookVip-v4.1.6-release.Apk"
+    "HookVip-v4.1.7-release.Apk"
   ]
 }
