@@ -1,26 +1,26 @@
 {
-  "tag_name": "oss-173",
-  "published_at": "2026-09-30T00:43:24Z",
-  "sync_time": "2026-09-30T04:28:00.179580",
+  "tag_name": "oss-175",
+  "published_at": "2026-11-06T10:37:27Z",
+  "sync_time": "2026-11-07T05:00:11.416229",
   "assets": [
     {
-      "name": "HMA-OSS-ZYGISK-oss-173-debug.zip",
-      "size": 11542899,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-173/HMA-OSS-ZYGISK-oss-173-debug.zip"
+      "name": "HMA-OSS-ZYGISK-oss-175-debug.zip",
+      "size": 10439858,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-175/HMA-OSS-ZYGISK-oss-175-debug.zip"
     },
     {
-      "name": "HMA-OSS-ZYGISK-oss-173-release.zip",
-      "size": 2743824,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-173/HMA-OSS-ZYGISK-oss-173-release.zip"
+      "name": "HMA-OSS-ZYGISK-oss-175-release.zip",
+      "size": 2582384,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-175/HMA-OSS-ZYGISK-oss-175-release.zip"
     },
     {
       "name": "translators.json",
-      "size": 12911,
-      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-173/translators.json"
+      "size": 13472,
+      "download_url": "https://github.com/frknkrc44/HMA-OSS/releases/download/oss-175/translators.json"
     }
   ],
   "downloaded_files": [
-    "HMA-OSS-ZYGISK-oss-173-debug.zip",
-    "HMA-OSS-ZYGISK-oss-173-release.zip"
+    "HMA-OSS-ZYGISK-oss-175-debug.zip",
+    "HMA-OSS-ZYGISK-oss-175-release.zip"
   ]
 }
